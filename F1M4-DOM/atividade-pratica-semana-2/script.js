@@ -34,15 +34,15 @@ function listarAnimais() {
   if (select_animais.value == "dog") {
     for (var i = 0; i < cachorros.length; i++) {
       let img = document.createElement("img");
-      img.src = "./img/dog" + [i + 1] + ".jpg";
-      img.alt = cachorros[i].nome;
+      img.setAttribute("src", "./img/dog" + (i + 1) + ".jpg");
+      img.setAttribute("alt", cachorros[i].nome);
       container.appendChild(img);
     }
   } else {
-    for (var i = 0; i <= cachorros.length; i++) {
+    for (var i = 0; i <= gatos.length; i++) {
       let img = document.createElement("img");
-      img.src = "./img/cat" + [i + 1] + ".jpg";
-      img.alt = gatos[i].nome;
+      img.setAttribute("src", "./img/cat" + (i + 1) + ".jpg");
+      img.setAttribute("alt", gatos[i].nome);
       container.appendChild(img);
     }
   }
