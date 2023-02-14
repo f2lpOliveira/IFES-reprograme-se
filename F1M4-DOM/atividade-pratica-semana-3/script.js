@@ -1,31 +1,33 @@
-(function() {
-  'use strict'
+(function () {
+  "use strict";
 
-  var forms = document.querySelectorAll('.needs-validation')
+  var forms = document.querySelectorAll(".needs-validation");
 
-  Array.prototype.slice.call(forms)
-    .forEach(function(form) {
-      form.addEventListener('submit', function(event) {
+  Array.prototype.slice.call(forms).forEach(function (form) {
+    form.addEventListener(
+      "submit",
+      function (event) {
         if (!form.checkValidity()) {
-          form.classList.add('was-validated')
+          form.classList.add("was-validated");
         } else {
-          inserir()
-          form.classList.remove('was-validated')
-          form.reset()
+          inserir();
+          form.classList.remove("was-validated");
+          form.reset();
         }
-        event.preventDefault()
-        event.stopPropagation()
-      }, false)
-    })
-})()
-
+        event.preventDefault();
+        event.stopPropagation();
+      },
+      false
+    );
+  });
+})();
 
 function getLocalStorage() {
-  return JSON.parse(localStorage.getItem('bd_clientes')) ?? [];
+  return JSON.parse(localStorage.getItem("bd_veiculos")) ?? [];
 }
 
-function setLocalStorage(bd_clientes) {
-  localStorage.setItem('bd_clientes', JSON.stringify(bd_clientes));
+function setLocalStorage(bd_veiculos) {
+  localStorage.setItem("bd_veiculos", JSON.stringify(bd_veiculos));
 }
 
 function limparTabela() {
@@ -35,57 +37,65 @@ function limparTabela() {
   }
 }
 
-function atualizarTabela() { // Adaptação da função atualizarTabela (5 pontos)
+function atualizarTabela() {
+  // Adaptação da função atualizarTabela (5 pontos)
   limparTabela();
-  const bd_clientes = getLocalStorage();
+  const bd_veiculos = getLocalStorage();
   let index = 0;
-  for (cliente of bd_clientes) {
-    const novaLinha = document.createElement('tr');
+  for (veiculo of bd_veiculos) {
+    const novaLinha = document.createElement("tr");
     novaLinha.innerHTML = `
         <th scope="row">${index}</th>
-        <td>${cliente.nome}</td>
-        <td>${cliente.email}</td>
-        <td>${cliente.celular}</td>
-        <td>${cliente.estado}</td>
+        <td>${veiculo.marca}</td>
+        <td>${veiculo.modelo}</td>
+        <td>${veiculo.ano}</td>
+        <td>${veiculo.cor}</td>
+				<td>${veiculo.condicao}</td>
+				<td>${veiculo.preco}</td>
         <td>
             <button type="button" class="btn btn-danger" id="${index}" onclick="excluir(${index})">Excluir</button>
         </td>
-    `
-    document.querySelector('#tabela>tbody').appendChild(novaLinha)
+    `;
+    document.querySelector("#tabela>tbody").appendChild(novaLinha);
     index++;
   }
 }
 
-function inserir() { // Adaptação da função inserir (10 pontos)
-  const cliente = {
-    nome: document.getElementById('nome').value,
-    email: document.getElementById('email').value,
-    celular: document.getElementById('celular').value,
-    estado: document.getElementById('estado').value
-  }
-  const bd_clientes = getLocalStorage();
-  bd_clientes.push(cliente);
-  setLocalStorage(bd_clientes);
+function inserir() {
+  // Adaptação da função inserir (10 pontos)
+  const veiculo = {
+    marca: document.getElementById("marca").value,
+    modelo: document.getElementById("modelo").value,
+    ano: document.getElementById("ano").value,
+    cor: document.getElementById("cor").value,
+    condicao: document.getElementById("condicao").value,
+    preco: document.getElementById("preco").value,
+  };
+  const bd_veiculos = getLocalStorage();
+  bd_veiculos.push(veiculo);
+  setLocalStorage(bd_veiculos);
   atualizarTabela();
 }
 
-function excluir(index) { // Adaptação da função excluir (5 pontos)
-  const bd_clientes = getLocalStorage();
-  bd_clientes.splice(index, 1);
-  setLocalStorage(bd_clientes);
+function excluir(index) {
+  // Adaptação da função excluir (5 pontos)
+  const bd_veiculos = getLocalStorage();
+  bd_veiculos.splice(index, 1);
+  setLocalStorage(bd_veiculos);
   atualizarTabela();
 }
 
-function validarCelular() { // Adaptação da função validar (10 pontos)
-  const bd_clientes = getLocalStorage();
-  for (cliente of bd_clientes) {
-    if (celular.value == cliente.celular) {
-      celular.setCustomValidity("Este número de celular já existe!");
-      feedbackCelular.innerText = "Este número de celular já existe!";
+function validarModelo() {
+  // Adaptação da função validar (10 pontos)
+  const bd_veiculos = getLocalStorage();
+  for (veiculo of bd_veiculos) {
+    if (modelo.value == veiculo.modelo) {
+      modelo.setCustomValidity("Este modelo de veículo já existe!");
+      feedbackModelo.innerText = "Este modelo de veículo já existe!";
       return false;
     } else {
-      celular.setCustomValidity("");
-      feedbackCelular.innerText = "Informe o celular corretamente.";
+      modelo.setCustomValidity("");
+      feedbackModelo.innerText = "Informe o modelo do veículo corretamente.";
     }
   }
   return true;
@@ -93,6 +103,6 @@ function validarCelular() { // Adaptação da função validar (10 pontos)
 
 atualizarTabela();
 // Seleção dos elementos e adição do listener para validação customizada (5 pontos)
-const celular = document.getElementById("celular");
-const feedbackCelular = document.getElementById("feedbackCelular");
-celular.addEventListener('input', validarCelular);
+const modelo = document.getElementById("modelo");
+const feedbackModelo = document.getElementById("feedbackModelo");
+modelo.addEventListener("input", validarModelo);
